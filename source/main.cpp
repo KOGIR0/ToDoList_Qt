@@ -6,22 +6,77 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QScrollArea>
+#include <QLineEdit>
+#include <QSizePolicy>
+#include <QGridLayout>
+#include <QString>
+
+#include <vector>
+#include <string>
+
+class Task : public QWidget
+{
+public:
+    Task(const QString& text, QWidget* parent = 0) : QWidget(parent)
+    {
+        QHBoxLayout* layout = new QHBoxLayout();
+
+        QLabel* label = new QLabel(text);
+        QPushButton* deleteBtn = new QPushButton("delete", this);
+
+        connect(deleteBtn, &QPushButton::clicked, this, [=](){delete this;});
+
+        layout->addWidget(label);
+        layout->addWidget(deleteBtn);
+
+        setLayout(layout);
+    }
+};
+
+class TasksList : public QWidget
+{
+public:
+    TasksList(QWidget* parent = 0) : QWidget(parent)
+    {
+        layout = new QVBoxLayout();
+
+        layout->addWidget(new Task("some task"));
+
+        setLayout(layout);
+    }
+
+    void addTask(const QString& text)
+    {
+        layout->addWidget(new Task(text));
+    }
+
+private:
+    QVBoxLayout* layout;
+};
 
 class InputArea : public QWidget
 {
 public:
-    InputArea()
+    InputArea(QWidget* parent = 0) : QWidget(parent)
     {
-        QHBoxLayout* layout = new QHBoxLayout();
+        layout = new QGridLayout();
         
         QPushButton* addBtn = new QPushButton("Add", this);
-        QLabel* textField = new QLabel("Text", this);
+        textField = new QLineEdit(this);
+        TasksList* list = new TasksList();
 
-        layout->addWidget(textField);
-        layout->addWidget(addBtn);
+        connect(addBtn, &QPushButton::clicked, list, [=](){list->addTask(textField->text());});
+        
+        layout->addWidget(textField, 0, 0, 1, 1);
+        layout->addWidget(addBtn, 0, 1, 1, 1);
+        layout->addWidget(list, 1, 0, 3, 3);
 
         setLayout(layout);
     }
+
+private:
+    QGridLayout* layout;
+    QLineEdit* textField;
 };
 
 class MainWindow : public QMainWindow
@@ -35,7 +90,7 @@ public:
         scrollArea->setWidget(ia);
         scrollArea->setAlignment(Qt::AlignHCenter);
 
-        setCentralWidget(scrollArea);
+        setCentralWidget(ia);
     }
 
 private:
