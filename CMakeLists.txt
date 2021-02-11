@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 3.0)
-project(Task_app)
+project(ToDoList)
+
+# set source files
+set(SOURCE_FILES
+    source/Task.cpp
+    source/TasksList.cpp
+    source/InputArea.cpp
+    source/MainWindow.cpp
+)
 
 # Tell CMake to run moc when necessary:
 set(CMAKE_AUTOMOC ON)
@@ -10,6 +18,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Widgets finds its own dependencies.
 find_package(Qt5Widgets REQUIRED)
 
-add_executable(Task_app source/main.cpp)
+add_executable(ToDoList source/main.cpp ${SOURCE_FILES})
+include_directories(include)
 
-qt5_use_modules(Task_app Widgets)
+qt5_use_modules(ToDoList Widgets)
