@@ -11,6 +11,10 @@ class Task : public QWidget
 {
 public:
     Task(const QString& text, QWidget* parent = 0);
+    QString getText();
+
+private:
+    QLabel* label;
 };
 
 #endif

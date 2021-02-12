@@ -4,7 +4,7 @@ Task::Task(const QString& text, QWidget* parent) : QWidget(parent)
 {
     QHBoxLayout* layout = new QHBoxLayout();
 
-    QLabel* label = new QLabel(text);
+    label = new QLabel(text);
     QPushButton* deleteBtn = new QPushButton("delete", this);
 
     connect(deleteBtn, &QPushButton::clicked, this, [=](){delete this;});
@@ -13,4 +13,9 @@ Task::Task(const QString& text, QWidget* parent) : QWidget(parent)
     layout->addWidget(deleteBtn);
 
     setLayout(layout);
+}
+
+QString Task::getText()
+{
+    return this->label->text();
 }

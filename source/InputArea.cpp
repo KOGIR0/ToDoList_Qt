@@ -10,7 +10,7 @@ InputArea::InputArea(QWidget* parent) : QWidget(parent)
     
     QPushButton* addBtn = new QPushButton("Add", this);
     textField = new QLineEdit(this);
-    TasksList* list = new TasksList();
+    list = new TasksList();
     list->setStyleSheet("QWidget { background-color: gray; }");
 
     QScrollArea* scrollArea = new QScrollArea(this);
@@ -18,11 +18,16 @@ InputArea::InputArea(QWidget* parent) : QWidget(parent)
     scrollArea->setAlignment(Qt::AlignHCenter);
     scrollArea->setWidgetResizable(true);
 
-    connect(addBtn, &QPushButton::clicked, list, [=](){list->addTask(textField->text());});
+    connect(addBtn, &QPushButton::clicked, list,[=](){list->addTask(textField->text());});
     
     layout->addWidget(textField, 0, 0, 1, 1);
     layout->addWidget(addBtn, 0, 1, 1, 1);
     layout->addWidget(scrollArea, 1, 0, 3, 3);
 
     setLayout(layout);
+}
+
+std::vector<QString> InputArea::getTasks()
+{
+    return this->list->getTasks();
 }
